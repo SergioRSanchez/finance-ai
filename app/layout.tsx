@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ClerkProvider } from '@clerk/nextjs';
 import "./globals.css";
+import { dark } from '@clerk/themes';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            baseTheme: dark
+          }}
+        >
           {children}
         </ClerkProvider>
       </body>
