@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import { Card, CardContent, CardHeader } from "@/app/_components/ui/card";
+import AddTransactionButton from "@/app/_components/add-transaction-button";
 
 interface SummaryCardProps {
   icon: ReactNode;
@@ -26,7 +27,7 @@ const SummaryCard = ({
         </p>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="flex justify-between">
         <p
           className={`${size === "small" ? "text-2xl" : "text-4xl"} font-bold`}
         >
@@ -35,6 +36,8 @@ const SummaryCard = ({
             currency: "BRL",
           }).format(amount)}
         </p>
+
+        {size === "large" && <AddTransactionButton />}
       </CardContent>
     </Card>
   );
