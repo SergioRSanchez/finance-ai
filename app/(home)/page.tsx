@@ -38,7 +38,9 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
           <TimeSelect />
         </div>
 
-        <SummaryCards month={month} />
+        <div className="grid grid-cols-[2fr,1fr]">
+          <SummaryCards month={month} />
+        </div>
       </div>
     </>
   );
