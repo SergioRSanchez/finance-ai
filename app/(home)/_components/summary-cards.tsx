@@ -4,24 +4,35 @@ import {
   TrendingUpIcon,
   WalletIcon,
 } from "lucide-react";
+import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 import { db } from "@/app/_lib/prisma";
 import SummaryCard from "./summary-card";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 
-const SummaryCards = async () => {
+interface SummaryCardsProps {
+  month: string;
+}
+
+const SummaryCards = async ({ month }: SummaryCardsProps) => {
   const { userId } = await auth();
 
   if (!userId) {
     redirect("/login");
   }
 
+  const where = {
+    date: {
+      gte: new Date(`2025-${month}-01`),
+      lt: new Date(`2025-${month}-31`),
+    },
+  };
+
   const depositsTotal =
     Number(
       (
         await db.transaction.aggregate({
-          where: { type: "DEPOSIT", userId },
+          where: { ...where, type: "DEPOSIT", userId },
           _sum: { amount: true },
         })
       )?._sum?.amount,
@@ -31,7 +42,7 @@ const SummaryCards = async () => {
     Number(
       (
         await db.transaction.aggregate({
-          where: { type: "INVESTMENT", userId },
+          where: { ...where, type: "INVESTMENT", userId },
           _sum: { amount: true },
         })
       )?._sum?.amount,
@@ -41,7 +52,7 @@ const SummaryCards = async () => {
     Number(
       (
         await db.transaction.aggregate({
-          where: { type: "EXPENSE", userId },
+          where: { ...where, type: "EXPENSE", userId },
           _sum: { amount: true },
         })
       )?._sum?.amount,
