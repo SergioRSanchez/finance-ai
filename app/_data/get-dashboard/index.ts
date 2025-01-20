@@ -19,6 +19,8 @@ export const getDashboard = async (month: string) => {
       gte: new Date(`2025-${month}-01`),
       lt: new Date(`2025-${month}-31`),
     },
+
+    // INCLUIR O USER ID NO WHERE PADRÃO
   };
 
   const depositsTotal =
@@ -88,6 +90,12 @@ export const getDashboard = async (month: string) => {
     ),
   }));
 
+  const lastTransactions = await db.transaction.findMany({
+    where: { userId },
+    orderBy: { date: "desc" },
+    take: 10,
+  });
+
   return {
     balance,
     depositsTotal,
@@ -95,5 +103,6 @@ export const getDashboard = async (month: string) => {
     expensesTotal,
     typesPercentage,
     totalExpensePerCategory,
+    lastTransactions,
   };
 };
