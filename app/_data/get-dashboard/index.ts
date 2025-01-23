@@ -15,19 +15,18 @@ export const getDashboard = async (month: string) => {
   }
 
   const where = {
+    userId,
     date: {
       gte: new Date(`2025-${month}-01`),
       lt: new Date(`2025-${month}-31`),
     },
-
-    // INCLUIR O USER ID NO WHERE PADRÃO
   };
 
   const depositsTotal =
     Number(
       (
         await db.transaction.aggregate({
-          where: { ...where, type: "DEPOSIT", userId },
+          where: { ...where, type: "DEPOSIT" },
           _sum: { amount: true },
         })
       )?._sum?.amount,
@@ -37,7 +36,7 @@ export const getDashboard = async (month: string) => {
     Number(
       (
         await db.transaction.aggregate({
-          where: { ...where, type: "INVESTMENT", userId },
+          where: { ...where, type: "INVESTMENT" },
           _sum: { amount: true },
         })
       )?._sum?.amount,
@@ -47,7 +46,7 @@ export const getDashboard = async (month: string) => {
     Number(
       (
         await db.transaction.aggregate({
-          where: { ...where, type: "EXPENSE", userId },
+          where: { ...where, type: "EXPENSE" },
           _sum: { amount: true },
         })
       )?._sum?.amount,
@@ -58,7 +57,7 @@ export const getDashboard = async (month: string) => {
   const transactionsTotal = Number(
     (
       await db.transaction.aggregate({
-        where: { ...where, userId },
+        where: { ...where },
         _sum: { amount: true },
       })
     )._sum.amount,
@@ -79,7 +78,7 @@ export const getDashboard = async (month: string) => {
   const totalExpensePerCategory: TotalExpensesPerCategory[] = (
     await db.transaction.groupBy({
       by: ["category"],
-      where: { ...where, type: "EXPENSE", userId },
+      where: { ...where, type: "EXPENSE" },
       _sum: { amount: true },
     })
   ).map((category) => ({
@@ -91,7 +90,7 @@ export const getDashboard = async (month: string) => {
   }));
 
   const lastTransactions = await db.transaction.findMany({
-    where: { userId },
+    where,
     orderBy: { date: "desc" },
     take: 15,
   });
