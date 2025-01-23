@@ -7,13 +7,16 @@ import { CardContent, CardHeader, CardTitle } from "@/app/_components/ui/card";
 import { ScrollArea } from "@/app/_components/ui/scroll-area";
 import Image from "next/image";
 import { formatCurrency } from "@/app/_utils/currency";
-import { TRANSACTION_PAYMENT_METHOD_ICONS } from "@/app/_constants/transactions";
+import {
+  TRANSACTION_PAYMENT_METHOD_ICONS,
+  TRANSACTION_PAYMENT_METHOD_LABELS,
+} from "@/app/_constants/transactions";
 
 interface LastTransactionsProps {
-  lastTransactionss: Transaction[];
+  lastTransactions: Transaction[];
 }
 
-const LastTransactions = ({ lastTransactionss }: LastTransactionsProps) => {
+const LastTransactions = ({ lastTransactions }: LastTransactionsProps) => {
   const getAmountColor = (transaction: Transaction) => {
     if (transaction.type === TransactionType.EXPENSE) {
       return "text-red-500";
@@ -42,7 +45,7 @@ const LastTransactions = ({ lastTransactionss }: LastTransactionsProps) => {
       </CardHeader>
 
       <CardContent className="space-y-6">
-        {lastTransactionss.map((transaction) => (
+        {lastTransactions.map((transaction) => (
           <div
             key={transaction.id}
             className="flex items-center justify-between"
@@ -55,7 +58,9 @@ const LastTransactions = ({ lastTransactionss }: LastTransactionsProps) => {
                   }
                   height={20}
                   width={20}
-                  alt="PIX"
+                  alt={
+                    TRANSACTION_PAYMENT_METHOD_LABELS[transaction.paymentMethod]
+                  }
                 />
               </div>
 
