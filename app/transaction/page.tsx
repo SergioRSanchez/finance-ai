@@ -30,12 +30,14 @@ const TransactionPage = async () => {
           <AddTransactionButton />
         </div>
 
-        <ScrollArea className="h-full">
-          <DataTable
-            columns={transactionColumns}
-            data={JSON.parse(JSON.stringify(transactions))}
-          />
-        </ScrollArea>
+        <div className="h-[calc(100vh-190px)] overflow-hidden">
+          <ScrollArea className="h-full rounded-md border">
+            <DataTable
+              columns={transactionColumns}
+              data={JSON.parse(JSON.stringify(transactions))}
+            />
+          </ScrollArea>
+        </div>
       </div>
     </>
   );
