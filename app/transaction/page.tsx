@@ -6,6 +6,7 @@ import { DataTable } from "../_components/ui/data-table";
 import AddTransactionButton from "../_components/add-transaction-button";
 import Navbar from "../_components/navbar";
 import { transactionColumns } from "./_columns";
+import { ScrollArea } from "../_components/ui/scroll-area";
 
 const TransactionPage = async () => {
   const { userId } = await auth();
@@ -23,16 +24,18 @@ const TransactionPage = async () => {
   return (
     <>
       <Navbar />
-      <div className="space-y-6 p-6">
-        <div className="flex w-full items-center justify-between">
+      <div className="space-y-6 overflow-hidden p-6">
+        <div className="flex w-full items-center justify-between overflow-hidden">
           <h1 className="text-2xl font-bold">Transações</h1>
           <AddTransactionButton />
         </div>
 
-        <DataTable
-          columns={transactionColumns}
-          data={JSON.parse(JSON.stringify(transactions))}
-        />
+        <ScrollArea className="h-full">
+          <DataTable
+            columns={transactionColumns}
+            data={JSON.parse(JSON.stringify(transactions))}
+          />
+        </ScrollArea>
       </div>
     </>
   );
