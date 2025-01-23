@@ -29,6 +29,7 @@ const Home = async ({ searchParams: { month } }: HomeProps) => {
     console.log(new Date().getMonth());
     redirect(
       `/?month=${(new Date().getMonth() + 1).toString().padStart(2, "0")}`,
+      // `?month=${new Date().getMonth() + 1}`  // This will not work because it will redirect to /?month=1 instead of /?month=01 - CODE FROM CLASS
     );
   }
 
